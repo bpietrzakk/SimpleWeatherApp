@@ -14,46 +14,49 @@ class WeatherPage extends StatefulWidget {
 
 // LOGIKA I ZMIENNE TEGO EKRANU
 class _WeatherPageState extends State<WeatherPage> {
-  String cityName = '';
-  Weather? weather;
+  // api key
+  final _weatherService = WeatherService('c041dbe582a0cc0f11b349ac1a6d1eec');
+  Weather? _weather;
 
-  @override
-  void initState() {
-    super.initState();
-    getWeather();
+  // fetch weather
+  _fetchWeather() async{
+    String cityName = await _weatherService.getCurrentCity();
+
+    // get weather for city
+    try {
+      final weather = await _weatherService.getWeather(cityName);
+      setState(() {
+        _weather = weather;
+      });
+    }
+
+    // any errors
+    catch (error) {
+      print(error);
+    }
   }
 
-  void getWeather() async{
-    WeatherService weatherService = WeatherService('c041dbe582a0cc0f11b349ac1a6d1eec');
-    cityName = await weatherService.getCurrentCity();
-    weather = await weatherService.getWeather(cityName);
-    setState(() {});
+    @override
+  void initState() {
+    super.initState();
+
+    _fetchWeather();
   }
 
   //  budowanie wygladu apki
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Pogoda w ${cityName ?? ""}'),
-      ),
       body: Center(
-        child: weather == null
-            ? const CircularProgressIndicator()
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '${weather!.temperature.toStringAsFixed(1)} °C',
-                    style: TextStyle(fontSize: 48),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    weather!.mainCondition,
-                    style: TextStyle(fontSize: 32),
-                  ),
-                ],
-              ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(_weather?.cityName ?? "city..."),
+
+            Text('${_weather?.temperature.round()}*C')
+
+          ],
+        ),
       ),
     );
   }

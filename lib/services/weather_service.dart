@@ -20,7 +20,7 @@ class WeatherService {
   // get weather from json
   Future<Weather> getWeather(String cityName) async {
     // send get request to weather api
-    final response = await http.get(Uri.parse("$BASE_URL?q=$cityName&appid=$apiKey"));
+    final response = await http.get(Uri.parse('$BASE_URL?q=$cityName&appid=$apiKey&units=metric'));
     // await - wait to server response
 
     // check if everything is OK (200 - OK)

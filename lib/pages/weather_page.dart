@@ -15,7 +15,7 @@ class WeatherPage extends StatefulWidget {
 // LOGIKA I ZMIENNE TEGO EKRANU
 class _WeatherPageState extends State<WeatherPage> {
   // api key
-  final _weatherService = WeatherService('c041dbe582a0cc0f11b349ac1a6d1eec');
+  final _weatherService = WeatherService("c041dbe582a0cc0f11b349ac1a6d1eec");
   Weather? _weather;
 
   // fetch weather
@@ -36,7 +36,7 @@ class _WeatherPageState extends State<WeatherPage> {
     }
   }
 
-    @override
+  @override
   void initState() {
     super.initState();
 
@@ -53,8 +53,14 @@ class _WeatherPageState extends State<WeatherPage> {
           children: [
             Text(_weather?.cityName ?? "city..."),
 
-            Text('${_weather?.temperature.round()}*C')
+            Text('${_weather?.temperature.round()}*C'),
 
+            ElevatedButton(
+              onPressed: () async {
+                await _fetchWeather();
+              }, 
+              child: Text('get your location'),
+            ),
           ],
         ),
       ),

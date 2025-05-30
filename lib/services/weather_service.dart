@@ -20,7 +20,7 @@ class WeatherService {
   // get weather from json
   Future<Weather> getWeather(String cityName) async {
     // send get request to weather api
-    final response = await http.get(Uri.parse('$BASE_URL?q=$cityName&appid=$apiKey&units=metric'));
+    final response = await http.get(Uri.parse('$BASE_URL?q=$cityName&appid=$apiKey'));
     // await - wait to server response
 
     // check if everything is OK (200 - OK)
@@ -29,6 +29,7 @@ class WeatherService {
       // if its ok return weather
       // response.body - json
     } else {
+      print("json decode problem");
       throw Exception('Failed to load weather data');
       // if its not OK - throw exception - fail
     }
